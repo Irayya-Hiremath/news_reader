@@ -18,3 +18,9 @@ export async function getListOfArticles(params) {
       return error
     }
   }
+  
+  // documentation
+  // The getListOfArticles function is a specific implementation
+  //  for fetching a list of articles from an API endpoint using the
+  //   axiosGet utility function. This function demonstrates
+  //  how to centralize API calls for better code reuse and error handling

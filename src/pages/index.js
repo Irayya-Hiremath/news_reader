@@ -1,7 +1,5 @@
-
 import { useState, useEffect, useCallback, useMemo } from "react";
 import SearchForm from "../components/SearchForm";
-import PreferencesForm from "../components/PreferencesForm";
 import { getListOfArticles } from "./api/getArticles";
 import NewsCard from "@/components/NewsCard";
 import { debounce } from "lodash";
@@ -11,34 +9,19 @@ const Home = () => {
   const [articles, setArticles] = useState([]);
   const [filteredArticles, setFilteredArticles] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [preferences, setPreferences] = useState(() => {
-    if (typeof window !== "undefined") {
-      return JSON.parse(localStorage.getItem("preferences")) || {};
-    }
-    return {};
-  });
 
-  const memoizedPreferences = useMemo(() => preferences, [preferences]);
-
-  useEffect(() => {
-    if (memoizedPreferences) {
-      localStorage.setItem("preferences", JSON.stringify(memoizedPreferences));
-    }
-  }, [memoizedPreferences]);
-
-  const handleSavePreferences = (prefs) => {
-    setPreferences(prefs);
-  };
-
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetchArticles = useCallback(
-    debounce(async (q, from,  sortBy) => {
+    debounce(async (q, from, sortBy) => {
       setLoading(true);
-      if(q !==''){
+      if (q !== "") {
         try {
-          const params = { q:q?q:'technology', from,  sortBy };
+          const params = { q: q ? q : "technology", from, sortBy };
           const response = await getListOfArticles(params);
           if (response.status === 200 && response.data.articles.length > 0) {
-            const filterData = response.data.articles.filter((el) => el.title !== "[Removed]");
+            const filterData = response.data.articles.filter(
+              (el) => el.title !== "[Removed]"
+            );
             setArticles(filterData);
             setFilteredArticles(filterData);
           } else {
@@ -52,7 +35,6 @@ const Home = () => {
         }
       }
       setLoading(false);
-      
     }, 3000),
     []
   );
@@ -74,14 +56,19 @@ const Home = () => {
           article.source.name.toLowerCase() === lowerCaseSource
       );
     } else if (date) {
-      filtered = articles.filter((article) => formatDate(article.publishedAt) === date);
+      filtered = articles.filter(
+        (article) => formatDate(article.publishedAt) === date
+      );
     } else if (source) {
-      filtered = articles.filter((article) => article.source.name.toLowerCase() === lowerCaseSource);
+      filtered = articles.filter(
+        (article) => article.source.name.toLowerCase() === lowerCaseSource
+      );
     }
 
     setFilteredArticles(filtered);
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const filterArticles = useCallback(
     debounce((date, source) => {
       filterArticlesBy(date, source);
@@ -95,7 +82,11 @@ const Home = () => {
 
   return (
     <>
-      <SearchForm onSearch={fetchArticles} source={articles} filterAction={filterArticles} />
+      <SearchForm
+        onSearch={fetchArticles}
+        source={articles}
+        filterAction={filterArticles}
+      />
       <section className="text-gray-600 body-font">
         <div className="container px-5 py-24 mx-auto">
           {loading ? (
@@ -107,7 +98,6 @@ const Home = () => {
               ))}
             </div>
           )}
-          {console.log("filteredArticles", filteredArticles)}
         </div>
       </section>
     </>
@@ -115,5 +105,3 @@ const Home = () => {
 };
 
 export default Home;
-
-

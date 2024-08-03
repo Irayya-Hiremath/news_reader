@@ -15,3 +15,10 @@ export const axiosPost = async ({ url, body }) => {
   const completeUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}${url}`;
   return axios.post(completeUrl, body, { headers });
 };
+
+
+// Documentation
+//  This module provides utility functions for making GET and POST requests using
+//  Axios in a Next.js application. It aims to 
+//  promote DRY (Don't Repeat Yourself) principles by centralizing common configurations and
+//  headers, making the codebase cleaner and more maintainable
