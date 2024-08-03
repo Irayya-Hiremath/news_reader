@@ -4,6 +4,7 @@ import { getListOfArticles } from "./api/getArticles";
 import NewsCard from "@/components/NewsCard";
 import { debounce } from "lodash";
 import SkeltonLoader from "@/components/SkeltonLoader";
+import { ToastContainer, toast } from "react-toastify";
 
 const Home = () => {
   const [articles, setArticles] = useState([]);
@@ -27,6 +28,10 @@ const Home = () => {
           } else {
             setArticles([]);
             setFilteredArticles([]);
+          }
+          if(response.status === 200 && response.data.articles.length ===0){
+            toast.error("Try diffrent keyword there is no articles realted tho thos keyword");
+
           }
         } catch (error) {
           console.error(error);
@@ -87,6 +92,8 @@ const Home = () => {
         source={articles}
         filterAction={filterArticles}
       />
+        <ToastContainer />
+
       <section className="text-gray-600 body-font">
         <div className="container px-5 py-24 mx-auto">
           {loading ? (
