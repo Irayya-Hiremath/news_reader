@@ -94,9 +94,10 @@ export default function SearchForm({ onSearch, source, filterAction }) {
               setSortBy(e.target.value);
               filterAction(from, e.target.value);
             }}
+            placeholder='Filter by sources'
             className="p-2 border rounded mb-2 w-full"
           >
-            <option value="">select</option>
+            <option value="">Sources</option>
             {sourceOptions?.length > 0 ? (
               sourceOptions?.map((el, index) => {
                 return (
